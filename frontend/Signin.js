@@ -1,6 +1,6 @@
 const Signin = () => {
     return (
-        <div className="signin">
+        <div className="Signin">
             <Text>Welcome</Text>
             <Text>Login:</Text>
             <Text>Password:</Text>

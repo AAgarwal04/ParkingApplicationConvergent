@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Signin from './Signin';
+import { Signin } from './Signin';
 
 export default function App() {
   return (
