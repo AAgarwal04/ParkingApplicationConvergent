@@ -2,28 +2,33 @@ import { View, Text, StyleSheet, Button, Pressable } from "react-native";
 
 const Settings = () => {
     return (
-        <><View style={styles.button1}>
-            <Button
-                title="Press Me"
-                onPress />
-        </View>
-        <View style={styles.button2}>
-            <Button
-                title="Press Me"
-                onPress />
-        </View>
-        <View style = {styles.button3}>
-            <Button
-                title = "Press Me"
-                onPress
+        <View>
+            <Button 
+                title = "Button 1"
+                color = "#f194ff"
+                onPress={() => Alert.alert('Button1 pressed')}
+            />
+            <Button 
+                title = "Button 2"
+                color = "#f194ff"
+                onPress={() => Alert.alert('Button2 pressed')}
+            />
+            <Button 
+                title = "Button 3"
+                color = "#f194ff"
+                onPress={() => Alert.alert('Button3 pressed')}
+            />
+            <Button 
+                title = "Button 4"
+                color = "#f194ff"
+                onPress={() => Alert.alert('Button4 pressed')}
             />
         </View>
-        <View style = {styles.button4}>
-            <Button
-                title = "Press Me"
-            /></>
-)};
-    
+    );
+}
+ 
+
+
 const styles = StyleSheet.create({
 
 });
