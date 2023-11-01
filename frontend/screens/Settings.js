@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Button, Pressable } from "react-native";
 
 const Settings = () => {
     return (
-        <View>
+        <View className = "Settings">
             <Button 
                 title = "Button 1"
                 color = "#f194ff"
