@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Signin from "./screens/Signin";
 import Homepage from "./screens/Homepage";
+import Settings from "./screens/Settings";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -30,11 +31,13 @@ export default function App() {
             }}
           />
           <Tab.Screen
-            name="Signin"
-            component={Signin} //Home Screen
+            name="Settings"
+            component={Settings} //Home Screen
             options={{
+              tabBarLabel: "Settings",
+              title: "Settings",
               tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="Signin" color={color} size={24} />
+                <MaterialCommunityIcons name="Settings" color={color} size={24} />
               ),
             }}
           />
