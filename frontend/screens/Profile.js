@@ -1,27 +1,27 @@
 import { View, Text, StyleSheet, Button, Pressable } from "react-native";
+import ImageUploader from "../ImageUploader";
 
-const Settings = () => {
+const Profile = () => {
     return (
-        <View className = "Settings">
+        <View className = "Profile" style = {styles.container}>
+            <View style={styles.imageUploader}>
+                <ImageUploader/>
+            </View>
             <Button 
                 title = "Button 1"
-                color = "#f194ff"
-                onPress={() => Alert.alert('Button1 pressed')}
+                color = "#ffffff"
             />
             <Button 
                 title = "Button 2"
-                color = "#f194ff"
-                onPress={() => Alert.alert('Button2 pressed')}
+                color = "#ffffff"
             />
             <Button 
                 title = "Button 3"
-                color = "#f194ff"
-                onPress={() => Alert.alert('Button3 pressed')}
+                color = "#ffffff"
             />
             <Button 
                 title = "Button 4"
-                color = "#f194ff"
-                onPress={() => Alert.alert('Button4 pressed')}
+                color = "#ffffff"
             />
         </View>
     );
@@ -30,7 +30,7 @@ const Settings = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#aa",
+      backgroundColor: "#4886ff",
       alignItems: "center",
       justifyContent: "center",
     },
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Settings;
+export default Profile;
