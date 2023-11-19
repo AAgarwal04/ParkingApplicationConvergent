@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
     },
+    imageUploader: {
+
+    },
     title: {
       fontSize: 40,
       fontWeight: "600",

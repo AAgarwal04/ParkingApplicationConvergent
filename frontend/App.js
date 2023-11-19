@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Signin from "./screens/Signin";
 import Homepage from "./screens/Homepage";
 import Profile from "./screens/Profile";
+import Listings from "./screens/Listings";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -27,6 +28,17 @@ export default function App() {
               title: "Home",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="home" color={color} size={24} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Listings"
+            component={Listings} //Home Screen
+            options={{
+              tabBarLabel: "Listings",
+              title: "Listings",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="Listings" color={color} size={24} />
               ),
             }}
           />
