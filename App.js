@@ -13,6 +13,7 @@ export default function App() {
     latitudeDelta: 100,
     longitudeDelta: 100});
 
+  //Feel free to add more markers. Go to https://www.latlong.net/ to find the appropriate latitude and longitutde.
   const [markers, setMarkers] = useState([
     { id: 1, coordinate: { latitude: 30.292416, longitude: -97.745343 }, info: "2 Spots Open\nGated\nApartment Building\nCovered"},
     { id: 2, coordinate: { latitude: 30.292093, longitude: -97.745376 }, info: "2 Spots Open\nUngated\nOutdoors"},
