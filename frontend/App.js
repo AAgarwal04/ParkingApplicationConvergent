@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Signin from "./screens/Signin";
 import Homepage from "./screens/Homepage";
 import Settings from "./screens/Settings";
+import Reservations from "./screens/Reservations";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -38,6 +39,17 @@ export default function App() {
               title: "Settings",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="Settings" color={color} size={24} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Reservations"
+            component={Reservations} //Reservations Screen
+            options={{
+              tabBarLabel: "Reservations",
+              title: "Reservations",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={24} />
               ),
             }}
           />
