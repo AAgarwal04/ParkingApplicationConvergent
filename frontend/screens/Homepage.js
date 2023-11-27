@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-<Feather name="calendar" size={24} color="black" />;
 import { SearchBar } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
@@ -19,7 +18,7 @@ import Modal from "react-native-modal";
 import Slider from "@react-native-community/slider";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-Geocoder.init("");
+Geocoder.init("AIzaSyCnHLMqcrGUKugvZrqW3jHp9OeyewPYfmQ");
 LocaleConfig.locales["en"] = {
   monthNames: [
     "January",
@@ -96,23 +95,23 @@ const Homepage = () => {
     setSelectedDates(newSelectedDates);
   };
 
+  // Filter Modal stuff
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
 
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!isFilterModalVisible);
+  };
+
+  // Map Stuff
   const [mapRegion, setMapRegion] = useState({
     latitude: 30.3817,
     longitude: -97.75645,
     latitudeDelta: 100,
     longitudeDelta: 100,
   });
-
-  // Filter Modal stuff
+  
   const [searchText, setSearchText] = useState("");
 
-  const toggleFilterModal = () => {
-    setFilterModalVisible(!isFilterModalVisible);
-  };
-
-  // Maps stuff
   //Feel free to add more markers. Go to https://www.latlong.net/ to find the appropriate latitude and longitutde.
   const [markers, setMarkers] = useState([
     {
@@ -368,7 +367,7 @@ const Homepage = () => {
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
-        customMapStyle={mapStyle}
+        //customMapStyle={mapStyle}
         region={mapRegion}
       >
         {markers.map((marker) => (

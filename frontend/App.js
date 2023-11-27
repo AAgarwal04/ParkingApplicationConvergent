@@ -13,8 +13,8 @@ import Signin from "./screens/Signin";
 import Signup from "./screens/Signup";
 import Homepage from "./screens/Homepage";
 import Settings from "./screens/Settings";
-import Tut1 from "./screens/Tut1";
-import Tut2 from "./screens/Tut2";
+import Activity from "./screens/Activity";
+import List from "./screens/List";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,7 +33,7 @@ const TabNavigator = () => (
   >
     <Tab.Screen
       name="Activity"
-      component={Tut1} //Home Screen
+      component={Activity}
       options={{
         tabBarLabel: "Activity",
         title: "Activity",
@@ -53,13 +53,13 @@ const TabNavigator = () => (
         tabBarLabel: "Park",
         title: "Park",
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="car-side" size={34} color={color} />
+          <MaterialCommunityIcons name="car-outline" size={32} color={color} />
         ),
       }}
     />
     <Tab.Screen
       name="List"
-      component={Tut2}
+      component={List}
       options={{
         tabBarLabel: "List",
         title: "List",
