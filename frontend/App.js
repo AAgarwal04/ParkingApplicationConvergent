@@ -3,40 +3,87 @@ import { StyleSheet, Text, View } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useTheme } from "react-native-paper";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Signin from "./screens/Signin";
 import Signup from "./screens/Signup";
 import Homepage from "./screens/Homepage";
 import Settings from "./screens/Settings";
+import Tut1 from "./screens/Tut1";
+import Tut2 from "./screens/Tut2";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const TabNavigator = () => (
   <Tab.Navigator
-    labeled={false}
-    barStyle={{ backgroundColor: "black" }}
-    activeColor="white"
+    initialRouteName="Park"
+    labeled={true}
+    barStyle={{
+      backgroundColor: "#F9F9F9",
+      borderTopWidth: 1,
+      borderTopColor: "#D9D9D9",
+      marginBottom: -10,
+    }}
+    activeColor="#4886FF"
   >
     <Tab.Screen
-      name="Home"
-      component={Homepage} //Home Screen
+      name="Activity"
+      component={Tut1} //Home Screen
       options={{
-        tabBarLabel: "Home",
-        title: "Home",
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={24} />
+        tabBarLabel: "Activity",
+        title: "Activity",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons
+            name="clock-outline"
+            size={30}
+            color={color}
+          />
         ),
       }}
     />
     <Tab.Screen
-      name="Settings"
-      component={Settings} //Home Screen
+      name="Park"
+      component={Homepage}
       options={{
-        tabBarLabel: "Settings",
-        title: "Settings",
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="Settings" color={color} size={24} />
+        tabBarLabel: "Park",
+        title: "Park",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="car-side" size={34} color={color} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="List"
+      component={Tut2}
+      options={{
+        tabBarLabel: "List",
+        title: "List",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons
+            name="clipboard-list-outline"
+            size={30}
+            color={color}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Profile"
+      component={Settings}
+      options={{
+        tabBarLabel: "Profile",
+        title: "Profile",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons
+            name="account-outline"
+            size={30}
+            color={color}
+          />
         ),
       }}
     />
@@ -44,9 +91,14 @@ const TabNavigator = () => (
 );
 
 export default function App() {
+  const theme = useTheme();
+  theme.colors.secondaryContainer = "transperent";
   return (
     <NavigationContainer style={styles.container}>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: false}}>
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen name="Login" component={Signin} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Main" component={TabNavigator} />

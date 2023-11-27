@@ -1,26 +1,103 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
-  Platform,
   Text,
   View,
   StyleSheet,
-  Button,
   Dimensions,
   SafeAreaView,
   Image,
+  TouchableOpacity,
 } from "react-native";
-import { FAB, Title } from "react-native-paper";
+import { Feather } from "@expo/vector-icons";
+<Feather name="calendar" size={24} color="black" />;
 import { SearchBar } from "react-native-elements";
-import MapView, {
-  PROVIDER_GOOGLE,
-  Marker,
-  Callout,
-  MapMarker,
-} from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import MarkerIcon from "../assets/map_marker.png";
+import Geocoder from "react-native-geocoding";
+import Modal from "react-native-modal";
+import Slider from "@react-native-community/slider";
+import DropDownPicker from "react-native-dropdown-picker";
+import { Calendar, LocaleConfig } from "react-native-calendars";
+Geocoder.init("");
+LocaleConfig.locales["en"] = {
+  monthNames: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  monthNamesShort: [
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May",
+    "Jun.",
+    "Jul.",
+    "Aug.",
+    "Sep.",
+    "Oct.",
+    "Nov.",
+    "Dec.",
+  ],
+  dayNames: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+};
+LocaleConfig.defaultLocale = "en";
 
 const Homepage = () => {
+  // Additional filter stuff
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "Disability Parking", value: "dp" },
+    { label: "EV Charging", value: "ev" },
+    { label: "Large Vehichle Size", value: "lv" },
+  ]);
+
+  // Price slider stuff
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100);
+
+  // Calendar Stuff
+  const [isCalendarVisible, setCalendarVisible] = useState(false);
+  const [selectedDates, setSelectedDates] = useState({});
+
+  const handleDayPress = (day) => {
+    const newSelectedDates = { ...selectedDates };
+
+    // Toggle selected date
+    if (newSelectedDates[day.dateString]) {
+      delete newSelectedDates[day.dateString]; // remove if already selected
+    } else {
+      newSelectedDates[day.dateString] = {
+        selected: true,
+        marked: true,
+        selectedColor: "#4886FF",
+      };
+    }
+    setSelectedDates(newSelectedDates);
+  };
+
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+
   const [mapRegion, setMapRegion] = useState({
     latitude: 30.3817,
     longitude: -97.75645,
@@ -28,8 +105,14 @@ const Homepage = () => {
     longitudeDelta: 100,
   });
 
+  // Filter Modal stuff
   const [searchText, setSearchText] = useState("");
 
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!isFilterModalVisible);
+  };
+
+  // Maps stuff
   //Feel free to add more markers. Go to https://www.latlong.net/ to find the appropriate latitude and longitutde.
   const [markers, setMarkers] = useState([
     {
@@ -258,10 +341,13 @@ const Homepage = () => {
         return;
       }
 
-      const result = await Location.geocodeAsync(searchText);
+      //const result = await Location.geocodeAsync(searchText);
+      const result = await Geocoder.from(searchText);
 
-      if (result && result.length > 0) {
-        const { latitude, longitude } = result[0];
+      if (result) {
+        //const { latitude, longitude } = result[0];
+        const latitude = result.results[0].geometry.location.lat;
+        const longitude = result.results[0].geometry.location.lng;
         setMapRegion((prevRegion) => ({
           ...prevRegion,
           latitude,
@@ -279,41 +365,228 @@ const Homepage = () => {
 
   return (
     <View className="Homepage" style={styles.container}>
-      <SafeAreaView style={styles.container}>
+      <MapView
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        customMapStyle={mapStyle}
+        region={mapRegion}
+      >
+        {markers.map((marker) => (
+          <Marker
+            key={marker.id}
+            coordinate={marker.coordinate}
+            title={marker.title}
+          >
+            <Callout>
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ textAlign: "center" }}>{marker.info}</Text>
+              </View>
+            </Callout>
+            <Image source={MarkerIcon} />
+          </Marker>
+        ))}
+      </MapView>
+
+      <View style={styles.searchBar}>
         <SearchBar
           placeholder="Search for a location"
           onChangeText={(text) => setSearchText(text)}
           onEndEditing={() => handleSearch(searchText)}
           value={searchText}
+          platform="default"
+          round
+          inputStyle={{ backgroundColor: "white" }}
+          containerStyle={{
+            backgroundColor: "transparent",
+            borderBottomColor: "transparent",
+            borderTopColor: "transparent",
+            borderRadius: 20,
+            flexDirection: "row-reverse",
+          }}
+          inputContainerStyle={{ backgroundColor: "white" }}
+          placeholderTextColor={"#A7A8A9"}
+          searchIcon={{
+            size: 24,
+            color: "#4886FF",
+            containerStyle: {
+              marginLeft: 10,
+            },
+          }}
         />
+      </View>
 
-        <MapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          customMapStyle={mapStyle}
-          region={mapRegion}
-        >
-          {markers.map((marker) => (
-            <Marker
-              key={marker.id}
-              coordinate={marker.coordinate}
-              title={marker.title}
-              //image={MarkerIcon}
-              // style={styles.markerIcon}
+      <Modal
+        isVisible={isFilterModalVisible}
+        onBackdropPress={toggleFilterModal}
+        swipeDirection={["down"]}
+        onSwipeComplete={toggleFilterModal}
+      >
+        <View style={styles.filterModal}>
+          <Text
+            style={{
+              color: "#4886FF",
+              marginTop: "5%",
+              marginRight: "70%",
+              fontWeight: "bold",
+            }}
+          >
+            Filter by
+          </Text>
+          <TouchableOpacity
+            onPress={() => setCalendarVisible(!isCalendarVisible)}
+            style={styles.dateButton}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              <Callout>
-                <View style={{ alignItems: "center" }}>
-                  <Text style={{ textAlign: "center" }}>{marker.info}</Text>
-                </View>
-              </Callout>
-              <Image
-                source={MarkerIcon}
-                style={styles.markerIcon}
-              />
-            </Marker>
-          ))}
-        </MapView>
-      </SafeAreaView>
+              <Text
+                style={{
+                  color: "#4886FF",
+                  fontWeight: "bold",
+                  paddingRight: 230,
+                }}
+              >
+                Date
+              </Text>
+              <Feather name="calendar" size={20} color="#4886FF" />
+            </View>
+          </TouchableOpacity>
+          {isCalendarVisible && (
+            <Calendar
+              onDayPress={handleDayPress}
+              markedDates={selectedDates}
+              theme={{
+                selectedDayTextColor: "#ffffff",
+                todayTextColor: "#4886FF",
+                arrowColor: "#4886FF",
+              }}
+            />
+          )}
+          <Text
+            style={{
+              color: "#4886FF",
+              marginTop: "5%",
+              marginRight: "63%",
+              fontWeight: "bold",
+            }}
+          >
+            Price Range
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{ color: "#4886FF", fontWeight: "bold", marginRight: 10 }}
+            >
+              Min
+            </Text>
+            <Slider
+              style={{ width: 200, height: 40 }}
+              minimumValue={0}
+              maximumValue={100}
+              step={1}
+              minimumTrackTintColor="#4886FF"
+              maximumTrackTintColor="#D9D9D9"
+              value={minPrice}
+              onValueChange={(value) => {
+                setMinPrice(value);
+              }}
+            />
+            <Text
+              style={{ color: "#4886FF", fontWeight: "bold", marginLeft: 10 }}
+            >
+              {minPrice}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{ color: "#4886FF", fontWeight: "bold", marginRight: 10 }}
+            >
+              Max
+            </Text>
+            <Slider
+              style={{ width: 200, height: 40 }}
+              minimumValue={0}
+              maximumValue={100}
+              step={1}
+              minimumTrackTintColor="#4886FF"
+              maximumTrackTintColor="#D9D9D9"
+              value={maxPrice}
+              onValueChange={(value) => {
+                setMaxPrice(value);
+              }}
+            />
+            <Text
+              style={{ color: "#4886FF", fontWeight: "bold", marginLeft: 10 }}
+            >
+              {maxPrice}
+            </Text>
+          </View>
+          <Text
+            style={{
+              color: "#4886FF",
+              fontWeight: "bold",
+              marginTop: "5%",
+              marginBottom: 10,
+              marginRight: "53%",
+            }}
+          >
+            Additional Filters
+          </Text>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            multiple={true}
+            min={0}
+            max={items.length}
+            containerStyle={{
+              backgroundColor: "#F9F9F9",
+              width: "85%",
+            }}
+            style={{
+              backgroundColor: "#F9F9F9",
+              borderColor: "#818181",
+              borderWidth: 1,
+            }}
+            textStyle={{color:"#4886FF"}}
+            dropDownContainerStyle={{
+              backgroundColor: "#F9F9F9",
+              borderColor: "#818181",
+              borderWidth: 1,
+            }}
+            placeholderStyle={{ color: "#4886FF" }}
+            mode="BADGE"
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+          />
+
+          {/* Apply button */}
+          <TouchableOpacity style={styles.applyButton}>
+            <Text style={{ color: "white", fontWeight: "bold" }}>Apply</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      {/* Button to toggle the filter modal */}
+      <TouchableOpacity onPress={toggleFilterModal} style={styles.filterButton}>
+        <Text style={{ color: "white" }}>Filter</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -321,7 +594,12 @@ const Homepage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    textAlign: "center",
+    alignItems: "center",
+  },
+  searchBar: {
+    zIndex: 1,
+    position: "absolute",
+    marginTop: 40,
   },
   map: {
     width: "100%",
@@ -330,6 +608,42 @@ const styles = StyleSheet.create({
   markerIcon: {
     width: 30,
     height: 40,
+  },
+  filterButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1,
+    position: "absolute",
+    marginTop: 700,
+    backgroundColor: "#4886ff",
+    width: "25%",
+    borderRadius: 10,
+    padding: "5%",
+  },
+  filterModal: {
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  applyButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#4886ff",
+    width: "85%",
+    height: 30,
+    borderRadius: 10,
+    margin: "5%",
+  },
+  dateButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F9F9F9",
+    borderColor: "#818181",
+    borderWidth: 1,
+    width: "85%",
+    height: 30,
+    borderRadius: 10,
+    marginTop: "5%",
   },
 });
 
