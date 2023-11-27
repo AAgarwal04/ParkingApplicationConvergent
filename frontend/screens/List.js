@@ -5,7 +5,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import MarkerIcon from "../assets/map_marker.png";
 import Geocoder from "react-native-geocoding";
-Geocoder.init("AIzaSyCnHLMqcrGUKugvZrqW3jHp9OeyewPYfmQ");
+Geocoder.init("");
 
 const Step1 = ({ onNext }) => {
   return (

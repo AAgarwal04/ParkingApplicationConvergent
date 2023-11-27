@@ -18,7 +18,7 @@ import Modal from "react-native-modal";
 import Slider from "@react-native-community/slider";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-Geocoder.init("AIzaSyCnHLMqcrGUKugvZrqW3jHp9OeyewPYfmQ");
+Geocoder.init("");
 LocaleConfig.locales["en"] = {
   monthNames: [
     "January",
