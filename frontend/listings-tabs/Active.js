@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, Button, Pressable, Image } from "react-native";
 const Active = () => {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/images/icon-car.png')} style={styles.carImage}/>
+            <Image source={require('../assets/images/icon-car.png')} style={styles.carImage} />
             <Text style={styles.textNotice}>You Don't Have Any Active Parking Sessions Right Now</Text>
             <View style={styles.parkNow}>
                 <Button
-                    color = "#ffffff"
+                    color="#ffffff"
                     title="Park Now"
                 />
             </View>
@@ -16,7 +16,7 @@ const Active = () => {
     );
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
     },
@@ -41,7 +41,6 @@ const styles = StyleSheet.create ({
         alignSelf: 'center',
         marginTop: 105,
         textAlign: 'center'
-
     }
 });
 
