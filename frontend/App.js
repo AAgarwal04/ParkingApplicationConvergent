@@ -4,6 +4,7 @@ import Signin from "./screens/Signin";
 import Homepage from "./screens/Homepage";
 import Settings from "./screens/Settings";
 import Reservations from "./screens/Reservations";
+import mapreservation from "./screens/mapreservation";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -48,6 +49,17 @@ export default function App() {
             options={{
               tabBarLabel: "Reservations",
               title: "Reservations",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={24} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="mapreservation"
+            component={mapreservation} //Reservations Screen
+            options={{
+              tabBarLabel: "mapreservation",
+              title: "mapreservation",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="home" color={color} size={24} />
               ),
