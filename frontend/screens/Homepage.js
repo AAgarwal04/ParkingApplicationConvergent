@@ -18,7 +18,7 @@ import Modal from "react-native-modal";
 import Slider from "@react-native-community/slider";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-Geocoder.init("");
+Geocoder.init("AIzaSyDR9trtzHdr7LavPiE9o4X-4vKU7VcQlv4");
 LocaleConfig.locales["en"] = {
   monthNames: [
     "January",
@@ -114,26 +114,28 @@ const Homepage = () => {
 
   //Feel free to add more markers. Go to https://www.latlong.net/ to find the appropriate latitude and longitutde.
   const [markers, setMarkers] = useState([
-    {
-      id: 1,
-      coordinate: { latitude: 30.292416, longitude: -97.745343 },
-      info: "2 Spots Open\nGated\nApartment Building\nCovered",
-    },
-    {
-      id: 2,
-      coordinate: { latitude: 30.292093, longitude: -97.745376 },
-      info: "2 Spots Open\nUngated\nOutdoors",
-    },
-    {
-      id: 3,
-      coordinate: { latitude: 30.280887, longitude: -97.736359 },
-      info: "4 Spots Open\nGated\nMultilevel Garage",
-    },
-    {
-      id: 4,
-      coordinate: { latitude: 30.284303, longitude: -97.743254 },
-      info: "3 Spots Open\nGated\nApartment Building\nCovered",
-    },
+    { id: 1, coordinate: { latitude: 30.292416, longitude: -97.745343 }, info: "2 Spots Open\nGated\nApartment Building\nCovered"},
+    { id: 2, coordinate: { latitude: 30.292093, longitude: -97.745376 }, info: "2 Spots Open\nUngated\nOutdoors"},
+    { id: 3, coordinate: { latitude: 30.280887, longitude: -97.736359 }, info: "4 Spots Open\nGated\nMulti-Level Parking Garage\nCovered"},
+    { id: 4, coordinate: { latitude: 30.284303, longitude: -97.743254 }, info: "3 Spots Open\nGated\nApartment Building\nCovered"},
+    //Castillian
+    { id: 5, coordinate: { latitude: 30.287300, longitude: -97.742439 }, info: "5 Spots Open\nGated\nApartment Building\nCovered"},
+    //Crest
+    { id: 6, coordinate: { latitude: 30.283310, longitude: -97.746440 }, info: "4 Spots Open\nGated\nApartment Building\nCovered"},
+    //Callaway
+    { id: 7, coordinate: { latitude: 30.284740, longitude: -97.743670 }, info: "6 Spots Open\nGated\nApartment Building\nCovered"},
+    //26 West
+    { id: 8, coordinate: { latitude: 30.291109, longitude: -97.743462 }, info: "4 Spots Open\nGated\nApartment Building\nCovered"},
+    //The Block 25th
+    { id: 9, coordinate: { latitude: 30.28958, longitude: -97.745159 }, info: "1 Spot Open\nGated\nApartment Building\nCovered"},
+    //The Block 23rd
+    { id: 10, coordinate: { latitude: 30.28701, longitude: -97.7465774 }, info: "1 Spot Open\nGated\nApartment Building\nCovered"},
+    //The Block 28th
+    { id: 11, coordinate: { latitude: 30.293277, longitude: -97.744633 }, info: "6 Spots Open\nGated\nApartment Building\nCovered"},
+    //The Block Leon
+    { id: 12, coordinate: { latitude: 30.2904735, longitude: -97.7497522 }, info: "10 Spots Open\nGated\nApartment Building\nCovered"},
+    //Sig 1909
+    { id: 13, coordinate: { latitude: 30.2836878, longitude: -97.7447841 }, info: "3 Spots Open\nGated\nApartment Building\nCovered"},
 
     // Add more markers as needed
   ]);
@@ -376,11 +378,11 @@ const Homepage = () => {
             coordinate={marker.coordinate}
             title={marker.title}
           >
-            <Callout>
+            {/* <Callout>
               <View style={{ alignItems: "center" }}>
                 <Text style={{ textAlign: "center" }}>{marker.info}</Text>
               </View>
-            </Callout>
+            </Callout> */}
             <Image source={MarkerIcon} />
           </Marker>
         ))}

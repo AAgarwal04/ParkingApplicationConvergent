@@ -12,9 +12,9 @@ import {
 import Signin from "./screens/Signin";
 import Signup from "./screens/Signup";
 import Homepage from "./screens/Homepage";
-import Settings from "./screens/Settings";
 import Activity from "./screens/Activity";
 import List from "./screens/List";
+import Profile from "./screens/Profile";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -74,7 +74,7 @@ const TabNavigator = () => (
     />
     <Tab.Screen
       name="Profile"
-      component={Settings}
+      component={Profile}
       options={{
         tabBarLabel: "Profile",
         title: "Profile",

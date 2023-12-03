@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { SearchBar } from "react-native-elements";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import MarkerIcon from "../assets/map_marker.png";
 import Geocoder from "react-native-geocoding";
-Geocoder.init("");
+Geocoder.init("AIzaSyDR9trtzHdr7LavPiE9o4X-4vKU7VcQlv4");
 
 const Step1 = ({ onNext }) => {
   return (
@@ -30,7 +31,7 @@ const Step1 = ({ onNext }) => {
   );
 };
 
-const Step2 = ({ onNext }) => {
+const Step2 = ({ onNext, onBack }) => {
   // Map Stuff
   const [mapRegion, setMapRegion] = useState({
     latitude: 30.3817,
@@ -101,7 +102,7 @@ const Step2 = ({ onNext }) => {
     }
   };
   return (
-    <View>
+    <View style={{ alignItems: "center" }}>
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
@@ -114,16 +115,14 @@ const Step2 = ({ onNext }) => {
             coordinate={marker.coordinate}
             title={marker.title}
           >
-            <Callout>
-              <View style={{ alignItems: "center" }}>
-                <Text style={{ textAlign: "center" }}>{marker.info}</Text>
-              </View>
-            </Callout>
             <Image source={MarkerIcon} />
           </Marker>
         ))}
       </MapView>
       <View style={styles.searchBar}>
+        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+          <Ionicons name="arrow-back" size={24} color="#4886ff" />
+        </TouchableOpacity>
         <SearchBar
           placeholder="Where's your spot located?"
           onChangeText={(text) => setSearchText(text)}
@@ -150,6 +149,134 @@ const Step2 = ({ onNext }) => {
           }}
         />
       </View>
+      <TouchableOpacity style={styles.nextButton} onPress={onNext}>
+        <Text style={{ color: "white", fontWeight: "bold" }}>Next</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const Step3 = ({ onNext, onBack }) => {
+  return (
+    <View style={styles.threeContainer}>
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "white",
+          width: "10%",
+          height: 40,
+          borderRadius: 10,
+          marginTop: "10%",
+          marginRight: "85%",
+        }}
+        onPress={onBack}
+      >
+        <Ionicons name="arrow-back" size={24} color="#4886ff" />
+      </TouchableOpacity>
+      <Image
+        style={{ marginTop: 10 }}
+        source={require("../assets/setup.png")}
+      />
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "10%",
+          backgroundColor: "#4886ff",
+          width: "25%",
+          height: 40,
+          borderRadius: 10,
+        }}
+        onPress={onNext}
+      >
+        <Text style={{ color: "white", fontWeight: "bold" }}>Next</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const Step4 = ({ onNext, onBack }) => {
+  return (
+    <View
+      style={{
+        alignItems: "center",
+        backgroundColor: "#F9FAFC",
+        height: "100%",
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "white",
+          width: "10%",
+          height: 40,
+          borderRadius: 10,
+          marginTop: "10%",
+          marginRight: "85%",
+        }}
+        onPress={onBack}
+      >
+        <Ionicons name="arrow-back" size={24} color="#4886ff" />
+      </TouchableOpacity>
+      <Text style={styles.title}>Provide an Official ID</Text>
+      <TouchableOpacity style={styles.idButton}>
+        <Text style={styles.buttonText}>Government ID</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "10%",
+          backgroundColor: "#4886ff",
+          width: "25%",
+          height: 40,
+          borderRadius: 10,
+        }}
+        onPress={onNext}
+      >
+        <Text style={{ color: "white", fontWeight: "bold" }}>Next</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const Step5 = ({ back }) => {
+  return (
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#F9FAFC",
+        height: "100%",
+      }}
+    >
+      <FontAwesome5 name="check-circle" size={150} color="#4886FF" />
+      <Text
+        style={{
+          fontSize: 24,
+          fontWeight: "bold",
+          marginTop: "15%",
+          marginBottom: "10%",
+        }}
+      >
+        All Done!
+      </Text>
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "10%",
+          backgroundColor: "#4886ff",
+          width: "25%",
+          height: 40,
+          borderRadius: 10,
+        }}
+        onPress={back}
+      >
+        <Text style={{ color: "white", fontWeight: "bold" }}>Return</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -161,13 +288,27 @@ const List = () => {
     setCurrentStep(currentStep + 1);
   };
 
+  const handleBack = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const returnBack = () => {
+    setCurrentStep(1);
+  };
+
   // Render the appropriate step based on the current step state
   const renderStep = () => {
     switch (currentStep) {
       case 1:
         return <Step1 onNext={handleNext} />;
       case 2:
-        return <Step2 onNext={handleNext} />;
+        return <Step2 onNext={handleNext} onBack={handleBack} />;
+      case 3:
+        return <Step3 onNext={handleNext} onBack={handleBack} />;
+      case 4:
+        return <Step4 onNext={handleNext} onBack={handleBack} />;
+      case 5:
+        return <Step5 back={returnBack} />;
       // Add more cases for additional steps
       default:
         return null;
@@ -232,8 +373,62 @@ const styles = StyleSheet.create({
   searchBar: {
     zIndex: 1,
     position: "absolute",
-    marginTop: "10%",
+    //marginTop: "0%",
     alignItems: "center",
+  },
+  next: {
+    zIndex: 1,
+    alignItems: "center",
+    position: "absolute",
+    paddingTop: 100,
+  },
+  nextButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1,
+    position: "absolute",
+    marginTop: 680,
+    backgroundColor: "#4886ff",
+    width: "25%",
+    height: 40,
+    borderRadius: 10,
+  },
+  backButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    width: "10%",
+    height: 40,
+    borderRadius: 10,
+    marginTop: "10%",
+    marginRight: "85%",
+  },
+  threeContainer: {
+    //flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F9FAFC",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: "30%",
+    marginBottom: "40%",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16,
+  },
+  idButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#4886FF",
+    width: "75%",
+    height: 40,
+    borderRadius: 10,
+    marginBottom: 220,
   },
 });
 
