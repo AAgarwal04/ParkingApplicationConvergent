@@ -15,11 +15,13 @@ import Homepage from "./screens/Homepage";
 import Activity from "./screens/Activity";
 import List from "./screens/List";
 import Profile from "./screens/Profile";
+import Spot from "./screens/Spot";
+import Finished from "./screens/Finished";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const TabNavigator = () => (
+const TabNavigator = ({ navigation }) => (
   <Tab.Navigator
     initialRouteName="Park"
     labeled={true}
@@ -102,6 +104,8 @@ export default function App() {
         <Stack.Screen name="Login" component={Signin} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Main" component={TabNavigator} />
+        <Stack.Screen name="Spot" component={Spot} options={detachPreviousScreen=false} />
+        <Stack.Screen name="Finished" component={Finished} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -14,9 +14,9 @@ const Step1 = ({ onNext }) => {
       <View style={styles.profileBox}>
         <Image
           style={styles.profileImage}
-          source={require("../assets/profile_pic.png")}
+          source={require("../assets/king_tut_pfp.jpg")}
         />
-        <Text style={styles.profileName}>Lionel Messi</Text>
+        <Text style={styles.profileName}>King Tut</Text>
         <TouchableOpacity style={styles.setupButton} onPress={onNext}>
           <Image
             style={styles.parkUp}
@@ -137,6 +137,11 @@ const Step2 = ({ onNext, onBack }) => {
             borderTopColor: "transparent",
             borderRadius: 20,
             flexDirection: "row-reverse",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.4,
+            shadowRadius: 5,
+            elevation: 5,
           }}
           inputContainerStyle={{ backgroundColor: "white" }}
           placeholderTextColor={"#A7A8A9"}
