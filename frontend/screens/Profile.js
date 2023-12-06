@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 //import ImageUploader from "../ImageUploader";
 
 const Profile = () => {
