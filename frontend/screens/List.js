@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker} from "react-native-maps";
 import * as Location from "expo-location";
 import MarkerIcon from "../assets/map_marker.png";
 import Geocoder from "react-native-geocoding";
 Geocoder.init("");
+import firebase from "../config";
 
 const Step1 = ({ onNext }) => {
   return (
@@ -161,7 +162,37 @@ const Step2 = ({ onNext, onBack }) => {
   );
 };
 
-const Step3 = ({ onNext, onBack }) => {
+const Step3 = ({ onNext, onBack, location }) => {
+  const [instruct, setInstruct] = useState("");
+  const [price, setPrice] = useState();
+  const [photos, setPhotos] = useState();
+  const [addInfo, setAddInfo] = useState("");
+  const spots = firebase.firestore().collection("openSpots");
+
+  const addField = () => {
+    if (instruct && instruct.length > 0 && price && photos && addInfo) {
+      const data = {
+        latitude: location.lat,
+        longitude: location.long,
+        instructions: instruct,
+        price: price,
+        pictures: photos,
+        additionalInfo: addInfo,
+      };
+      spots
+        .add(data)
+        .then(() => {
+          setInstruct("");
+          setPrice();
+          setPhotos();
+          setAddInfo("");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  };
+
   return (
     <View style={styles.threeContainer}>
       <TouchableOpacity
@@ -179,6 +210,7 @@ const Step3 = ({ onNext, onBack }) => {
       >
         <Ionicons name="arrow-back" size={24} color="#4886ff" />
       </TouchableOpacity>
+      {/* Couldnt get input to fuction properly */}
       <Image
         style={{ marginTop: 10 }}
         source={require("../assets/setup.png")}
@@ -193,7 +225,7 @@ const Step3 = ({ onNext, onBack }) => {
           height: 40,
           borderRadius: 10,
         }}
-        onPress={onNext}
+        onPress={addField.then(onNext)}
       >
         <Text style={{ color: "white", fontWeight: "bold" }}>Next</Text>
       </TouchableOpacity>

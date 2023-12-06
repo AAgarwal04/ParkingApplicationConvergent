@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const Finished = ({ navigation }) => {
   const onNext = () => {
